@@ -71,7 +71,7 @@ const About: React.FC = () => {
 
               <div className="absolute bottom-8 -left-8 bg-gray-900/90 backdrop-blur-md rounded-lg p-4 border border-purple-500/30 animate-float-delayed">
                 <div className="text-center">
-                  <div className="text-2xl font-bold text-purple-400">2+</div>
+                                    <div className="text-2xl font-bold text-purple-400">5+</div>
                   <div className="text-sm text-gray-400">Live Projects</div>
                 </div>
               </div>
