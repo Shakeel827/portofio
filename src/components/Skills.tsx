@@ -9,14 +9,80 @@ import {
   Users,
   Database,
   Globe,
-  Figma
+  Figma,
+  LucideIcon
 } from 'lucide-react';
+
+interface Skill {
+  name: string;
+  level: number;
+  icon: LucideIcon;
+}
+
+interface SkillCategory {
+  title: string;
+  icon: LucideIcon;
+  color: keyof typeof colorMap;
+  skills: Skill[];
+}
+
+interface ColorVariant {
+  gradient: string;
+  border: string;
+  text: string;
+  bg: string;
+  glow: string;
+  progressBg: string;
+}
+
+const colorMap: Record<string, ColorVariant> = {
+  cyan: {
+    gradient: 'from-cyan-400 via-cyan-500 to-blue-500',
+    border: 'border-cyan-500/30',
+    text: 'text-cyan-400',
+    bg: 'bg-cyan-500/10',
+    glow: '#06b6d4',
+    progressBg: 'from-cyan-900/20 to-cyan-800/30'
+  },
+  purple: {
+    gradient: 'from-purple-400 via-purple-500 to-pink-500',
+    border: 'border-purple-500/30',
+    text: 'text-purple-400',
+    bg: 'bg-purple-500/10',
+    glow: '#a855f7',
+    progressBg: 'from-purple-900/20 to-purple-800/30'
+  },
+  green: {
+    gradient: 'from-green-400 via-green-500 to-emerald-500',
+    border: 'border-green-500/30',
+    text: 'text-green-400',
+    bg: 'bg-green-500/10',
+    glow: '#22c55e',
+    progressBg: 'from-green-900/20 to-green-800/30'
+  },
+  pink: {
+    gradient: 'from-pink-400 via-pink-500 to-rose-500',
+    border: 'border-pink-500/30',
+    text: 'text-pink-400',
+    bg: 'bg-pink-500/10',
+    glow: '#ec4899',
+    progressBg: 'from-pink-900/20 to-pink-800/30'
+  },
+  orange: {
+    gradient: 'from-orange-400 via-orange-500 to-red-500',
+    border: 'border-orange-500/30',
+    text: 'text-orange-400',
+    bg: 'bg-orange-500/10',
+    glow: '#f97316',
+    progressBg: 'from-orange-900/20 to-orange-800/30'
+  }
+};
 
 const Skills: React.FC = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [animatedSkills, setAnimatedSkills] = useState<number[]>([]);
 
-  const skillCategories = [
+  const skillCategories: SkillCategory[] = [
     {
       title: 'Operations & Analysis',
       icon: BarChart3,
@@ -77,49 +143,6 @@ const Skills: React.FC = () => {
   const firstRowSkills = skillCategories.slice(0, 3);
   const secondRowSkills = skillCategories.slice(3, 5);
 
-  const colorMap = {
-    cyan: {
-      gradient: 'from-cyan-400 via-cyan-500 to-blue-500',
-      border: 'border-cyan-500/30',
-      text: 'text-cyan-400',
-      bg: 'bg-cyan-500/10',
-      glow: '#06b6d4',
-      progressBg: 'from-cyan-900/20 to-cyan-800/30'
-    },
-    purple: {
-      gradient: 'from-purple-400 via-purple-500 to-pink-500',
-      border: 'border-purple-500/30',
-      text: 'text-purple-400',
-      bg: 'bg-purple-500/10',
-      glow: '#a855f7',
-      progressBg: 'from-purple-900/20 to-purple-800/30'
-    },
-    green: {
-      gradient: 'from-green-400 via-green-500 to-emerald-500',
-      border: 'border-green-500/30',
-      text: 'text-green-400',
-      bg: 'bg-green-500/10',
-      glow: '#22c55e',
-      progressBg: 'from-green-900/20 to-green-800/30'
-    },
-    pink: {
-      gradient: 'from-pink-400 via-pink-500 to-rose-500',
-      border: 'border-pink-500/30',
-      text: 'text-pink-400',
-      bg: 'bg-pink-500/10',
-      glow: '#ec4899',
-      progressBg: 'from-pink-900/20 to-pink-800/30'
-    },
-    orange: {
-      gradient: 'from-orange-400 via-orange-500 to-red-500',
-      border: 'border-orange-500/30',
-      text: 'text-orange-400',
-      bg: 'bg-orange-500/10',
-      glow: '#f97316',
-      progressBg: 'from-orange-900/20 to-orange-800/30'
-    }
-  };
-
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -148,8 +171,8 @@ const Skills: React.FC = () => {
     return () => observer.disconnect();
   }, []);
 
-  const renderSkillCategory = (category: any, categoryIndex: number, isSecondRow: boolean = false) => {
-    const colors = colorMap[category.color as keyof typeof colorMap];
+  const renderSkillCategory = (category: SkillCategory, categoryIndex: number, isSecondRow: boolean = false) => {
+    const colors = colorMap[category.color];
     const CategoryIcon = category.icon;
     const baseCategoryIndex = isSecondRow ? 3 : 0;
 
@@ -176,7 +199,7 @@ const Skills: React.FC = () => {
 
         {/* Skills List */}
         <div className="space-y-5">
-          {category.skills.map((skill: any, skillIndex: number) => {
+          {category.skills.map((skill: Skill, skillIndex: number) => {
             const globalIndex = (baseCategoryIndex + categoryIndex) * 4 + skillIndex;
             const SkillIcon = skill.icon;
             
@@ -233,7 +256,7 @@ const Skills: React.FC = () => {
             <div className={`absolute inset-0 w-16 h-16 rounded-full ${colors.bg} opacity-20 group-hover/stats:opacity-40 transition-opacity duration-300 -z-10`}></div>
             
             <div className={`text-2xl font-bold ${colors.text} group-hover/stats:scale-110 transition-transform duration-300`}>
-              {Math.round(category.skills.reduce((sum: number, skill: any) => sum + skill.level, 0) / category.skills.length)}%
+              {Math.round(category.skills.reduce((sum: number, skill: Skill) => sum + skill.level, 0) / category.skills.length)}%
             </div>
             <div className="text-xs text-gray-400 uppercase tracking-wide group-hover/stats:text-gray-300 transition-colors duration-300">
               Average
