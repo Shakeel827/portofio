@@ -103,7 +103,7 @@ const Hero: React.FC = () => {
             </a>
             
             <a
-              href="https://linkedin.com/in/shakeel827"
+              href="https://www.linkedin.com/in/shaik-mohammad-shakeel-ba5a771b1/"
               target="_blank"
               rel="noopener noreferrer"
               className="group p-3 rounded-full border border-gray-700 hover:border-purple-500 transition-all duration-300 hover:scale-110 hover:shadow-lg hover:shadow-purple-500/25"
