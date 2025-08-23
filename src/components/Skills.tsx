@@ -173,93 +173,103 @@ const Skills: React.FC = () => {
         {/* Glow Effect */}
         <div className="absolute -inset-px rounded-2xl bg-gradient-to-r from-cyan-500 via-purple-500 to-pink-500 opacity-0 group-hover:opacity-70 transition-opacity duration-300 blur-lg"></div>
         <div className="relative">
-        {/* Category Header */}
-        <div className="flex items-center justify-between mb-6">
-          <div className="flex items-center gap-3">
-            <div className={`p-2 rounded-lg ${colors.bg} border ${colors.border}`}>
-              <CategoryIcon className={`w-6 h-6 ${colors.text}`} />
+          {/* Category Header */}
+          <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center gap-3">
+              <div className={`p-2 rounded-lg ${colors.bg} border ${colors.border}`}>
+                <CategoryIcon className={`w-6 h-6 ${colors.text}`} />
+              </div>
+              <h2 className={`text-xl font-bold ${colors.text}`}>
+                {category.title}
+              </h2>
             </div>
-            <h2 className={`text-xl font-bold ${colors.text}`}>
-              {category.title}
-            </h2>
           </div>
-        </div>
 
-        {/* Skills List */}
-        <div className="space-y-5">
-          {category.skills.map((skill: Skill, skillIndex: number) => {
-            const globalIndex = (baseCategoryIndex + categoryIndex) * 4 + skillIndex;
-            const SkillIcon = skill.icon;
-            
-            return (
-              <div key={skillIndex} className="group/skill">
-                {/* Skill Name and Percentage */}
-                <div className="flex items-center justify-between mb-3">
-                  <div className="flex items-center gap-2">
+          {/* Skills List */}
+          <div className="space-y-5">
+            {category.skills.map((skill: Skill, skillIndex: number) => {
+              const globalIndex = (baseCategoryIndex + categoryIndex) * 4 + skillIndex;
+              const SkillIcon = skill.icon;
+              const isAnimated = animatedSkills.includes(globalIndex);
+              
+              return (
+                <div key={skillIndex} className="group/skill">
+                  {/* Skill Name */}
+                  <div className="flex items-center gap-2 mb-2">
                     <div className={`p-1.5 rounded-lg ${colors.bg} border ${colors.border}`}>
                       <SkillIcon className={`w-4 h-4 ${colors.text}`} />
                     </div>
-                    <h3 className={`text-base font-medium ${colors.text}`}>
+                    <h3 className={`text-sm font-medium ${colors.text}`}>
                       {skill.name}
                     </h3>
                   </div>
-                  <div className={`px-3 py-1 rounded-full ${colors.bg} border ${colors.border}`}>
-                    <span className={`text-sm font-bold ${colors.text}`}>
-                      {skill.level}%
-                    </span>
-                  </div>
-                </div>
 
-                {/* Progress Bar */}
-                <div className={`h-3 rounded-full relative overflow-hidden bg-gradient-to-r ${colors.progressBg} border ${colors.border}`}>
-                  <div 
-                    className={`h-full rounded-full bg-gradient-to-r ${colors.gradient} transition-all duration-1000 ease-out`}
-                    style={{
-                      width: animatedSkills.includes(globalIndex) ? `${skill.level}%` : '0%',
-                      boxShadow: animatedSkills.includes(globalIndex) 
-                        ? `0 0 10px ${colors.glow}60` 
-                        : 'none'
-                    }}
-                  >
-                    {/* Shimmer Effect */}
-                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent animate-shimmer"></div>
-                  </div>
-                  
-                  {/* Emoji Badge - NOT CROSSING */}
-                  <div className={`absolute -right-2 top-1/2 transform -translate-y-1/2 w-6 h-6 rounded-full ${colors.bg} border ${colors.border} flex items-center justify-center z-20`}>
-                    <span className="text-xs">
-                      ⚡
-                    </span>
+                  {/* Progress Bar Container */}
+                  <div className="relative">
+                    {/* Background Bar */}
+                    <div className={`h-2 w-full rounded-full bg-gradient-to-r ${colors.progressBg} border ${colors.border} overflow-hidden`}>
+                      {/* Progress Fill */}
+                      <div 
+                        className={`h-full rounded-full bg-gradient-to-r ${colors.gradient} transition-all duration-1000 ease-out relative`}
+                        style={{
+                          width: isAnimated ? `${skill.level}%` : '0%',
+                          boxShadow: isAnimated 
+                            ? `0 0 8px ${colors.glow}40` 
+                            : 'none'
+                        }}
+                      >
+                        {/* Shimmer Effect */}
+                        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-shimmer"></div>
+                      </div>
+                    </div>
+
+                    {/* Moving Icon and Percentage */}
+                    <div 
+                      className="absolute top-1/2 transform -translate-y-1/2 flex items-center gap-1 transition-all duration-1000 ease-out"
+                      style={{
+                        left: isAnimated ? `calc(${skill.level}% - 24px)` : '-24px',
+                      }}
+                    >
+                      {/* Star Icon */}
+                      <div className={`w-4 h-4 rounded-full ${colors.bg} border ${colors.border} flex items-center justify-center text-xs`}>
+                        ⭐
+                      </div>
+                      
+                      {/* Percentage Badge */}
+                      <div className={`px-2 py-0.5 rounded-full ${colors.bg} border ${colors.border} ml-1`}>
+                        <span className={`text-xs font-bold ${colors.text} whitespace-nowrap`}>
+                          {skill.level}%
+                        </span>
+                      </div>
+                    </div>
                   </div>
                 </div>
+              );
+            })}
+          </div>
+
+          {/* Category Average */}
+          <div className={`mt-6 pt-4 border-t ${colors.border} flex justify-center relative`}>
+            <div className="text-center group/stats">
+              <div className={`absolute inset-0 w-16 h-16 rounded-full ${colors.bg} opacity-20 group-hover/stats:opacity-40 transition-opacity duration-300 -z-10`}></div>
+              
+              <div className={`text-2xl font-bold ${colors.text} group-hover/stats:scale-110 transition-transform duration-300`}>
+                {Math.round(category.skills.reduce((sum: number, skill: Skill) => sum + skill.level, 0) / category.skills.length)}%
               </div>
-            );
-          })}
-        </div>
-
-        {/* Enhanced Category Stats */}
-        <div className={`mt-6 pt-4 border-t ${colors.border} flex justify-center relative`}>
-          <div className="text-center group/stats">
-            {/* Animated Background Circle */}
-            <div className={`absolute inset-0 w-16 h-16 rounded-full ${colors.bg} opacity-20 group-hover/stats:opacity-40 transition-opacity duration-300 -z-10`}></div>
-            
-            <div className={`text-2xl font-bold ${colors.text} group-hover/stats:scale-110 transition-transform duration-300`}>
-              {Math.round(category.skills.reduce((sum: number, skill: Skill) => sum + skill.level, 0) / category.skills.length)}%
-            </div>
-            <div className="text-xs text-gray-400 uppercase tracking-wide group-hover/stats:text-gray-300 transition-colors duration-300">
-              Average
-            </div>
-            
-            {/* Floating Achievement Icons */}
-            <div className="absolute -top-2 -right-2 opacity-0 group-hover/stats:opacity-100 transition-opacity duration-500">
-              <div className="w-4 h-4 bg-yellow-400 rounded-full animate-bounce"></div>
-            </div>
-            <div className="absolute -bottom-2 -left-2 opacity-0 group-hover/stats:opacity-100 transition-opacity duration-500" style={{ animationDelay: '0.2s' }}>
-              <div className="w-3 h-3 bg-blue-400 rounded-full animate-bounce"></div>
+              <div className="text-xs text-gray-400 uppercase tracking-wide group-hover/stats:text-gray-300 transition-colors duration-300">
+                Average
+              </div>
+              
+              {/* Floating Achievement Icons */}
+              <div className="absolute -top-2 -right-2 opacity-0 group-hover/stats:opacity-100 transition-opacity duration-500">
+                <div className="w-4 h-4 bg-yellow-400 rounded-full animate-bounce"></div>
+              </div>
+              <div className="absolute -bottom-2 -left-2 opacity-0 group-hover/stats:opacity-100 transition-opacity duration-500" style={{ animationDelay: '0.2s' }}>
+                <div className="w-3 h-3 bg-blue-400 rounded-full animate-bounce"></div>
+              </div>
             </div>
           </div>
         </div>
-      </div>
       </div>
     );
   };
