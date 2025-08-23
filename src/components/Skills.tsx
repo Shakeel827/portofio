@@ -1,17 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { 
-  BarChart3, 
-  Palette, 
-  Code, 
-  Shield, 
-  MessageSquare, 
-  Lightbulb, 
-  Users,
-  Database,
-  Globe,
-  Figma,
-  LucideIcon
-} from 'lucide-react';
+import { BarChart3, Palette, Code, Shield, MessageSquare, Lightbulb, Users, Database, Globe, Figma, DivideIcon as LucideIcon } from 'lucide-react';
 
 interface Skill {
   name: string;
@@ -223,9 +211,9 @@ const Skills: React.FC = () => {
                 </div>
 
                 {/* Progress Bar */}
-                <div className={`h-3 rounded-full relative overflow-hidden bg-gradient-to-r ${colors.progressBg} border ${colors.border} mb-1`}>
+                <div className={`h-3 rounded-full relative overflow-hidden bg-gradient-to-r ${colors.progressBg} border ${colors.border}`}>
                   <div 
-                    className={`h-full rounded-full bg-gradient-to-r ${colors.gradient} transition-all duration-1000 ease-out relative`}
+                    className={`h-full rounded-full bg-gradient-to-r ${colors.gradient} transition-all duration-1000 ease-out`}
                     style={{
                       width: animatedSkills.includes(globalIndex) ? `${skill.level}%` : '0%',
                       boxShadow: animatedSkills.includes(globalIndex) 
@@ -235,13 +223,13 @@ const Skills: React.FC = () => {
                   >
                     {/* Shimmer Effect */}
                     <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent animate-shimmer"></div>
-                    
-                    {/* Star Icon at the end of progress bar */}
-                    <div className="absolute right-1 top-1/2 transform -translate-y-1/2 flex items-center justify-center">
-                      <div className={`w-5 h-5 rounded-full ${colors.bg} border ${colors.border} flex items-center justify-center`}>
-                        <span className="text-xs">⭐</span>
-                      </div>
-                    </div>
+                  </div>
+                  
+                  {/* Emoji Badge - NOT CROSSING */}
+                  <div className={`absolute -right-2 top-1/2 transform -translate-y-1/2 w-6 h-6 rounded-full ${colors.bg} border ${colors.border} flex items-center justify-center z-20`}>
+                    <span className="text-xs">
+                      ⚡
+                    </span>
                   </div>
                 </div>
               </div>
