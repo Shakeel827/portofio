@@ -228,17 +228,15 @@ const Skills: React.FC = () => {
                     }}
                   />
 
-                  {/* ⚡ Marker — exactly at % */}
-                  <div
-                    className={`absolute top-1/2 -translate-y-1/2 w-6 h-6 rounded-full ${colors.bg} border ${colors.border} flex items-center justify-center`}
-                    style={{
-                      left: animatedSkills.includes(globalIndex)
-                        ? `${skill.level}%`
-                        : '0%'
-                    }}
-                  >
-                    <span className="text-xs">⚡</span>
-                  </div>
+                  {/* ⚡ Marker */}
+                  {animatedSkills.includes(globalIndex) && (
+                    <div
+                      className={`absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-6 h-6 rounded-full ${colors.bg} border ${colors.border} flex items-center justify-center transition-all duration-1000`}
+                      style={{ left: `${skill.level}%` }}
+                    >
+                      <span className="text-xs">⚡</span>
+                    </div>
+                  )}
                 </div>
               </div>
             );
