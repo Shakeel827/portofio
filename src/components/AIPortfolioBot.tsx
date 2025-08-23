@@ -71,7 +71,7 @@ const AIPortfolioBot: React.FC = () => {
     }
     
     if (input.includes('contact') || input.includes('email') || input.includes('reach')) {
-      return "📩 You can reach Shakeel at:\n\n• **Email**: shakeel9086@gmail.com\n• **Phone**: +91 8074015276\n• **Location**: Bapatla, Andhra Pradesh\n\nOr scroll down to the Contact section for more options! 📞";
+      return "📩 You can reach Shakeel at:\n\n• **Email**: skshakeel9086@gmail.com\n• **Phone**: +91 8074015276\n• **Location**: Bapatla, Andhra Pradesh\n\nOr scroll down to the Contact section for more options! 📞";
     }
     
     if (input.includes('hello') || input.includes('hi') || input.includes('hey')) {
