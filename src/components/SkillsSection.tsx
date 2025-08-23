@@ -96,34 +96,54 @@ const skillsData: Category[] = [
 ];
 
 // --- COMPONENTS --- //
-const SkillProgressBar: React.FC<{ name: string; percentage: number; icon: React.ReactNode; color: string; isInView: boolean }> = ({ name, percentage, icon, color, isInView }) => (
-  <div className="mb-4">
-    <div className="flex items-center gap-3 mb-2">
-      <div className={`text-transparent bg-clip-text bg-gradient-to-r ${color}`}>{icon}</div>
-      <span className="text-gray-300 font-medium text-sm">{name}</span>
-    </div>
-    <div className="h-2 w-full bg-gray-800 rounded-full relative">
-      <div
-        className={`h-full rounded-full bg-gradient-to-r ${color} transition-all duration-1000 ease-out`}
-        style={{ width: isInView ? `${percentage}%` : '0%' }}
-      />
-      <div
-        className="absolute top-1/2 -translate-y-1/2 bg-gray-900 border-2 rounded-full transition-all duration-1000 ease-out"
-        style={{
-          left: isInView ? `calc(${percentage}% - 16px)` : '-16px',
-          borderColor: 'var(--color-from)',
-          width: '32px',
-          height: '32px',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center'
-        }}
-      >
-        <span className={`font-mono text-xs font-bold text-transparent bg-clip-text bg-gradient-to-r ${color}`}>{percentage}%</span>
+const SkillProgressBar: React.FC<{ 
+  name: string; 
+  percentage: number; 
+  icon: React.ReactNode; 
+  color: string; 
+  isInView: boolean 
+}> = ({ name, percentage, icon, color, isInView }) => {
+  return (
+    <div className="mb-5 w-full">
+      <div className="flex items-center gap-4 mb-1.5">
+        {/* Skill Name */}
+        <div className="flex items-center gap-2 w-40">
+          <span className="text-gray-300 font-medium text-sm whitespace-nowrap">
+            {name}
+          </span>
+        </div>
+
+        {/* Progress bar */}
+        <div className="flex-1 relative">
+          <div className="h-3 bg-gray-800/50 rounded-full overflow-hidden relative">
+            {/* Fill bar */}
+            <div
+              className={`h-full rounded-full bg-gradient-to-r ${color} transition-all duration-1000 ease-out`}
+              style={{
+                width: isInView ? `${percentage}%` : '0%',
+              }}
+            />
+
+            {/* Moving badge (icon + percentage) */}
+            <div
+              className="absolute top-1/2 -translate-y-1/2 flex items-center gap-1 px-2 py-0.5 rounded-full bg-gray-900/80 border border-gray-700 text-xs text-white transition-all duration-1000 ease-out"
+              style={{
+                left: isInView ? `${percentage}%` : '0%',
+                transform: 'translate(-50%, -50%)',
+              }}
+            >
+              {React.cloneElement(icon as React.ReactElement, {
+                size: 14,
+                className: "text-current"
+              })}
+              <span>{percentage}%</span>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
-);
+  );
+};
 
 const CategoryAverage: React.FC<{ percentage: number; color: string }> = ({ percentage, color }) => (
   <div className="text-center">
