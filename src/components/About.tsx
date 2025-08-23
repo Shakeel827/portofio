@@ -24,7 +24,7 @@ const About: React.FC = () => {
 
   const contactInfo = [
     { icon: MapPin, text: 'Bapatla, Andhra Pradesh, India', color: 'text-cyan-400' },
-    { icon: Mail, text: 'shakeel9086@gmail.com', color: 'text-purple-400' },
+    { icon: Mail, text: 'skshakeel9086@gmail.com', color: 'text-purple-400' },
     { icon: Phone, text: '+91 8074015276', color: 'text-pink-400' },
     { icon: Linkedin, text: 'linkedin.com/in/shakeel827', color: 'text-blue-400' },
     { icon: Globe, text: 'pandascanpros.in', color: 'text-green-400' },

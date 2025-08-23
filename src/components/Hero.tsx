@@ -112,7 +112,7 @@ const Hero: React.FC = () => {
             </a>
             
             <a
-              href="mailto:shakeel9086@gmail.com"
+              href="mailto:skshakeel9086@gmail.com"
               className="group p-3 rounded-full border border-gray-700 hover:border-pink-500 transition-all duration-300 hover:scale-110 hover:shadow-lg hover:shadow-pink-500/25"
             >
               <Mail className="w-6 h-6 group-hover:text-pink-400 transition-colors duration-300" />
