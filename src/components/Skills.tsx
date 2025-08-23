@@ -148,7 +148,6 @@ const Skills: React.FC = () => {
       ([entry]) => {
         if (entry.isIntersecting) {
           setIsVisible(true);
-          // Animate skill bars with staggered delay
           let index = 0;
           skillCategories.forEach((category) => {
             category.skills.forEach(() => {
@@ -181,100 +180,81 @@ const Skills: React.FC = () => {
       <div
         key={categoryIndex}
         className={`relative p-6 rounded-2xl border backdrop-blur-sm transition-all duration-300 hover:scale-105 hover:shadow-2xl group ${colors.border} ${colors.bg}`}
-        style={{ '--glow-color': colors.glow } as React.CSSProperties}
       >
-        {/* Glow Effect */}
-        <div className="absolute -inset-px rounded-2xl bg-gradient-to-r from-cyan-500 via-purple-500 to-pink-500 opacity-0 group-hover:opacity-70 transition-opacity duration-300 blur-lg"></div>
-        <div className="relative">
-          {/* Category Header */}
-          <div className="flex items-center justify-between mb-6">
-            <div className="flex items-center gap-3">
-              <div className={`p-2 rounded-lg ${colors.bg} border ${colors.border}`}>
-                <CategoryIcon className={`w-6 h-6 ${colors.text}`} />
-              </div>
-              <h2 className={`text-xl font-bold ${colors.text}`}>{category.title}</h2>
+        {/* Category Header */}
+        <div className="flex items-center justify-between mb-6">
+          <div className="flex items-center gap-3">
+            <div className={`p-2 rounded-lg ${colors.bg} border ${colors.border}`}>
+              <CategoryIcon className={`w-6 h-6 ${colors.text}`} />
             </div>
+            <h2 className={`text-xl font-bold ${colors.text}`}>{category.title}</h2>
           </div>
+        </div>
 
-          {/* Skills List */}
-          <div className="space-y-5">
-            {category.skills.map((skill: Skill, skillIndex: number) => {
-              const globalIndex = (baseCategoryIndex + categoryIndex) * 4 + skillIndex;
-              const SkillIcon = skill.icon;
+        {/* Skills */}
+        <div className="space-y-5">
+          {category.skills.map((skill: Skill, skillIndex: number) => {
+            const globalIndex = (baseCategoryIndex + categoryIndex) * 4 + skillIndex;
+            const SkillIcon = skill.icon;
 
-              return (
-                <div key={skillIndex} className="group/skill">
-                  {/* Skill Name and Percentage */}
-                  <div className="flex items-center justify-between mb-3">
-                    <div className="flex items-center gap-2">
-                      <div className={`p-1.5 rounded-lg ${colors.bg} border ${colors.border}`}>
-                        <SkillIcon className={`w-4 h-4 ${colors.text}`} />
-                      </div>
-                      <h3 className={`text-base font-medium ${colors.text}`}>{skill.name}</h3>
+            return (
+              <div key={skillIndex} className="group/skill">
+                {/* Skill Name & % */}
+                <div className="flex items-center justify-between mb-3">
+                  <div className="flex items-center gap-2">
+                    <div className={`p-1.5 rounded-lg ${colors.bg} border ${colors.border}`}>
+                      <SkillIcon className={`w-4 h-4 ${colors.text}`} />
                     </div>
-                    <div className={`px-3 py-1 rounded-full ${colors.bg} border ${colors.border}`}>
-                      <span className={`text-sm font-bold ${colors.text}`}>{skill.level}%</span>
-                    </div>
+                    <h3 className={`text-base font-medium ${colors.text}`}>{skill.name}</h3>
                   </div>
-
-                  {/* Progress Bar + OUTSIDE Power Badge (aligned, not overlapping) */}
-                  <div className="relative w-full pr-7"> {/* pr-7 reserves space for the badge */}
-                    <div className={`h-3 rounded-full overflow-hidden bg-gradient-to-r ${colors.progressBg} border ${colors.border}`}>
-                      <div
-                        className={`h-full rounded-full bg-gradient-to-r ${colors.gradient} transition-all duration-1000 ease-out`}
-                        style={{
-                          width: animatedSkills.includes(globalIndex) ? `${skill.level}%` : '0%',
-                          boxShadow: animatedSkills.includes(globalIndex)
-                            ? `0 0 10px ${colors.glow}60`
-                            : 'none'
-                        }}
-                      >
-                        {/* Shimmer Effect */}
-                        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent animate-shimmer"></div>
-                      </div>
-                    </div>
-
-                    {/* ⚡ Power Badge — outside, right-aligned, never overlaps */}
-                    <div
-                      className={`absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/4 w-6 h-6 rounded-full ${colors.bg} border ${colors.border} flex items-center justify-center z-10 pointer-events-none`}
-                      aria-hidden="true"
-                    >
-                      <span className="text-xs">⚡</span>
-                    </div>
+                  <div className={`px-3 py-1 rounded-full ${colors.bg} border ${colors.border}`}>
+                    <span className={`text-sm font-bold ${colors.text}`}>{skill.level}%</span>
                   </div>
                 </div>
-              );
-            })}
-          </div>
 
-          {/* Enhanced Category Stats */}
-          <div className={`mt-6 pt-4 border-t ${colors.border} flex justify-center relative`}>
-            <div className="text-center group/stats">
-              <div
-                className={`absolute inset-0 w-16 h-16 rounded-full ${colors.bg} opacity-20 group-hover/stats:opacity-40 transition-opacity duration-300 -z-10`}
-              ></div>
+                {/* Progress Bar with ⚡ indicator */}
+                <div className="relative w-full">
+                  {/* Background */}
+                  <div className={`h-3 rounded-full overflow-hidden bg-gradient-to-r ${colors.progressBg} border ${colors.border}`} />
 
-              <div className={`text-2xl font-bold ${colors.text} group-hover/stats:scale-110 transition-transform duration-300`}>
-                {Math.round(
-                  category.skills.reduce((sum: number, s: Skill) => sum + s.level, 0) /
-                    category.skills.length
-                )}%
-              </div>
-              <div className="text-xs text-gray-400 uppercase tracking-wide group-hover/stats:text-gray-300 transition-colors duration-300">
-                Average
-              </div>
+                  {/* Fill */}
+                  <div
+                    className={`absolute top-0 left-0 h-3 rounded-full bg-gradient-to-r ${colors.gradient} transition-all duration-1000 ease-out`}
+                    style={{
+                      width: animatedSkills.includes(globalIndex) ? `${skill.level}%` : '0%',
+                      boxShadow: animatedSkills.includes(globalIndex)
+                        ? `0 0 10px ${colors.glow}60`
+                        : 'none'
+                    }}
+                  />
 
-              {/* Floating Achievement Icons */}
-              <div className="absolute -top-2 -right-2 opacity-0 group-hover/stats:opacity-100 transition-opacity duration-500">
-                <div className="w-4 h-4 bg-yellow-400 rounded-full animate-bounce"></div>
+                  {/* ⚡ Marker — exactly at % */}
+                  <div
+                    className={`absolute top-1/2 -translate-y-1/2 w-6 h-6 rounded-full ${colors.bg} border ${colors.border} flex items-center justify-center`}
+                    style={{
+                      left: animatedSkills.includes(globalIndex)
+                        ? `${skill.level}%`
+                        : '0%'
+                    }}
+                  >
+                    <span className="text-xs">⚡</span>
+                  </div>
+                </div>
               </div>
-              <div
-                className="absolute -bottom-2 -left-2 opacity-0 group-hover/stats:opacity-100 transition-opacity duration-500"
-                style={{ animationDelay: '0.2s' }}
-              >
-                <div className="w-3 h-3 bg-blue-400 rounded-full animate-bounce"></div>
-              </div>
+            );
+          })}
+        </div>
+
+        {/* Average */}
+        <div className={`mt-6 pt-4 border-t ${colors.border} flex justify-center`}>
+          <div className="text-center">
+            <div className={`text-2xl font-bold ${colors.text}`}>
+              {Math.round(
+                category.skills.reduce((sum: number, s: Skill) => sum + s.level, 0) /
+                  category.skills.length
+              )}%
             </div>
+            <div className="text-xs text-gray-400 uppercase tracking-wide">Average</div>
           </div>
         </div>
       </div>
@@ -295,7 +275,6 @@ const Skills: React.FC = () => {
                 Skills & Expertise
               </span>
             </h2>
-            <div className="w-24 h-1 bg-gradient-to-r from-cyan-400 to-purple-400 mx-auto rounded-full"></div>
             <p className="text-gray-400 text-lg mt-6 max-w-2xl mx-auto">
               A comprehensive skill set built through hands-on experience and continuous learning
             </p>
@@ -307,22 +286,6 @@ const Skills: React.FC = () => {
             </div>
             <div className="grid md:grid-cols-2 gap-8 justify-center">
               {secondRowSkills.map((category, index) => renderSkillCategory(category, index, true))}
-            </div>
-          </div>
-
-          {/* Overall Summary */}
-          <div className="mt-16 text-center">
-            <div className="bg-gray-900/50 backdrop-blur-sm rounded-2xl border border-gray-700/50 p-8 max-w-4xl mx-auto">
-              <h3 className="text-2xl font-bold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-400">
-                Continuous Growth Mindset
-              </h3>
-              <p className="text-gray-300 leading-relaxed text-lg">
-                My diverse skill set reflects a journey of continuous learning and adaptation.
-                From technical expertise in cybersecurity and web development to creative problem-solving
-                in UI/UX design, I bring a holistic approach to every challenge. My experience in operations
-                and data analysis complements my technical skills, enabling me to build solutions that are
-                both innovative and practical.
-              </p>
             </div>
           </div>
         </div>
