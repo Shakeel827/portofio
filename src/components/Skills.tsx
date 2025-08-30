@@ -87,19 +87,3 @@ const SkillsSection = () => {
         <div className="space-y-8">
           {skillCategories.map((category, index) => (
             <div key={index} className="bg-gray-800/40 p-6 rounded-xl border border-gray-700/50">
-              <h3 className="text-xl font-semibold mb-6 flex items-center">
-                <span className="w-3 h-3 rounded-full bg-blue-500 mr-3"></span>
-                {category.name}
-              </h3>
-              
-              <div className="space-y-6">
-                {category.skills.map((skill, skillIndex) => (
-                  <SkillProgressBar 
-                    key={skillIndex}
-                    skill={skill}
-                    percentage={category.average}
-                    color={category.color}
-                    isInView={isInView}
-                  />
-                ))}
-              </div>
