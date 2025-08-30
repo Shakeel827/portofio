@@ -203,19 +203,18 @@ const Skills: React.FC = () => {
                       {skill.name}
                     </h3>
                   </div>
-                  <div className={`px-3 py-1 rounded-full ${colors.bg} border ${colors.border}`}>
-                    <span className={`text-sm font-bold ${colors.text}`}>
-                      {skill.level}%
-                    </span>
+                  <div className="flex items-center gap-2">
+                    <span className="text-yellow-400">⚡</span>
+                    <div className={`px-3 py-1 rounded-full ${colors.bg} border ${colors.border}`}>
+                      <span className={`text-sm font-bold ${colors.text}`}>
+                        {skill.level}%
+                      </span>
+                    </div>
                   </div>
                 </div>
 
-                {/* Progress Bar Container */}
-                <div className="relative h-3">
-                  {/* Background Bar */}
-                  <div className={`absolute h-full w-full rounded-full bg-gradient-to-r ${colors.progressBg} border ${colors.border}`}></div>
-                  
-                  {/* Progress Fill */}
+                {/* Progress Bar */}
+                <div className={`h-3 rounded-full relative overflow-hidden bg-gradient-to-r ${colors.progressBg} border ${colors.border}`}>
                   <div 
                     className={`h-full rounded-full bg-gradient-to-r ${colors.gradient} transition-all duration-1000 ease-out relative`}
                     style={{
@@ -227,18 +226,12 @@ const Skills: React.FC = () => {
                   >
                     {/* Shimmer Effect */}
                     <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent animate-shimmer"></div>
-                  </div>
-                  
-                  {/* Emoji Badge - Positioned based on percentage */}
-                  <div 
-                    className={`absolute top-1/2 w-6 h-6 rounded-full ${colors.bg} border ${colors.border} flex items-center justify-center z-20 transform -translate-y-1/2 transition-all duration-1000 ease-out`}
-                    style={{ 
-                      left: animatedSkills.includes(globalIndex) ? `calc(${skill.level}% - 0.75rem)` : '-0.75rem'
-                    }}
-                  >
-                    <span className="text-xs">
-                      ⚡
-                    </span>
+                    
+                    {/* Percentage Indicator Line */}
+                    <div 
+                      className="absolute top-0 bottom-0 w-px bg-white/80"
+                      style={{ left: `${skill.level}%` }}
+                    ></div>
                   </div>
                 </div>
               </div>
