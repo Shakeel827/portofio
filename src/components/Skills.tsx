@@ -1,322 +1,347 @@
-import React, { useEffect, useState } from 'react';
-import { BarChart3, Palette, Code, Shield, MessageSquare, Lightbulb, Users, Database, Globe, Figma } from 'lucide-react';
+import React, { useEffect, useState, useRef } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 
-interface Skill {
-  name: string;
-  level: number;
-  icon: React.ComponentType<any>;
-}
-
-interface SkillCategory {
-  title: string;
-  icon: React.ComponentType<any>;
-  color: keyof typeof colorMap;
-  skills: Skill[];
-}
-
-interface ColorVariant {
-  gradient: string;
-  border: string;
-  text: string;
-  bg: string;
-  glow: string;
-  progressBg: string;
-}
-
-const colorMap: Record<string, ColorVariant> = {
-  cyan: {
-    gradient: 'from-cyan-400 via-cyan-500 to-blue-500',
-    border: 'border-cyan-500/30',
-    text: 'text-cyan-400',
-    bg: 'bg-cyan-500/10',
-    glow: '#06b6d4',
-    progressBg: 'from-cyan-900/20 to-cyan-800/30'
-  },
-  purple: {
-    gradient: 'from-purple-400 via-purple-500 to-pink-500',
-    border: 'border-purple-500/30',
-    text: 'text-purple-400',
-    bg: 'bg-purple-500/10',
-    glow: '#a855f7',
-    progressBg: 'from-purple-900/20 to-purple-800/30'
-  },
-  green: {
-    gradient: 'from-green-400 via-green-500 to-emerald-500',
-    border: 'border-green-500/30',
-    text: 'text-green-400',
-    bg: 'bg-green-500/10',
-    glow: '#22c55e',
-    progressBg: 'from-green-900/20 to-green-800/30'
-  },
-  pink: {
-    gradient: 'from-pink-400 via-pink-500 to-rose-500',
-    border: 'border-pink-500/30',
-    text: 'text-pink-400',
-    bg: 'bg-pink-500/10',
-    glow: '#ec4899',
-    progressBg: 'from-pink-900/20 to-pink-800/30'
-  },
-  orange: {
-    gradient: 'from-orange-400 via-orange-500 to-red-500',
-    border: 'border-orange-500/30',
-    text: 'text-orange-400',
-    bg: 'bg-orange-500/10',
-    glow: '#f97316',
-    progressBg: 'from-orange-900/20 to-orange-800/30'
-  }
-};
-
-const Skills: React.FC = () => {
+const Skills = () => {
+  const [activeCategory, setActiveCategory] = useState(0);
   const [isVisible, setIsVisible] = useState(false);
-  const [animatedSkills, setAnimatedSkills] = useState<number[]>([]);
+  const containerRef = useRef(null);
 
-  const skillCategories: SkillCategory[] = [
+  const skillCategories = [
     {
       title: 'Operations & Analysis',
-      icon: BarChart3,
-      color: 'cyan',
+      icon: '📊',
+      color: 'from-cyan-500 to-blue-600',
       skills: [
-        { name: 'Data Analysis', level: 85, icon: BarChart3 },
-        { name: 'Process Optimization', level: 78, icon: Database },
-        { name: 'Research & Reporting', level: 82, icon: Globe },
-        { name: 'Quality Assurance', level: 75, icon: Shield }
-      ]
+        { name: 'Data Analysis', level: 85 },
+        { name: 'Process Optimization', level: 78 },
+        { name: 'Research & Reporting', level: 82 },
+        { name: 'Quality Assurance', level: 75 }
+      ],
+      average: 80
     },
     {
       title: 'UI/UX Design',
-      icon: Palette,
-      color: 'purple',
+      icon: '🎨',
+      color: 'from-purple-500 to-pink-600',
       skills: [
-        { name: 'Figma', level: 88, icon: Figma },
-        { name: 'Wireframing', level: 85, icon: Palette },
-        { name: 'Prototyping', level: 80, icon: Lightbulb },
-        { name: 'User Research', level: 75, icon: Users }
-      ]
+        { name: 'Figma', level: 88 },
+        { name: 'Wireframing', level: 85 },
+        { name: 'Prototyping', level: 80 },
+        { name: 'User Research', level: 75 }
+      ],
+      average: 82
     },
     {
       title: 'Technical Skills',
-      icon: Code,
-      color: 'green',
+      icon: '💻',
+      color: 'from-green-500 to-emerald-600',
       skills: [
-        { name: 'HTML/CSS/JS', level: 90, icon: Code },
-        { name: 'Python', level: 85, icon: Code },
-        { name: 'React', level: 80, icon: Globe },
-        { name: 'Git/GitHub', level: 88, icon: Database }
-      ]
+        { name: 'HTML/CSS/JS', level: 90 },
+        { name: 'Python', level: 85 },
+        { name: 'React', level: 80 },
+        { name: 'Git/GitHub', level: 88 }
+      ],
+      average: 86
     },
     {
       title: 'Cybersecurity',
-      icon: Shield,
-      color: 'pink',
+      icon: '🔒',
+      color: 'from-rose-500 to-red-600',
       skills: [
-        { name: 'Security Analysis', level: 82, icon: Shield },
-        { name: 'Vulnerability Assessment', level: 78, icon: Shield },
-        { name: 'Risk Management', level: 75, icon: Database },
-        { name: 'Security Protocols', level: 80, icon: Globe }
-      ]
+        { name: 'Security Analysis', level: 82 },
+        { name: 'Vulnerability Assessment', level: 78 },
+        { name: 'Risk Management', level: 75 },
+        { name: 'Security Protocols', level: 80 }
+      ],
+      average: 79
     },
     {
       title: 'Soft Skills',
-      icon: MessageSquare,
-      color: 'orange',
+      icon: '🤝',
+      color: 'from-amber-500 to-orange-600',
       skills: [
-        { name: 'Communication', level: 92, icon: MessageSquare },
-        { name: 'Problem Solving', level: 88, icon: Lightbulb },
-        { name: 'Teamwork', level: 85, icon: Users },
-        { name: 'Leadership', level: 80, icon: Users }
-      ]
+        { name: 'Communication', level: 92 },
+        { name: 'Problem Solving', level: 88 },
+        { name: 'Teamwork', level: 85 },
+        { name: 'Leadership', level: 80 }
+      ],
+      average: 86
     }
   ];
-
-  const firstRowSkills = skillCategories.slice(0, 3);
-  const secondRowSkills = skillCategories.slice(3, 5);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
           setIsVisible(true);
-          // Animate skill bars with staggered delay
-          let index = 0;
-          skillCategories.forEach((category) => {
-            category.skills.forEach((_, skillIndex) => {
-              setTimeout(() => {
-                setAnimatedSkills(prev => [...prev, index]);
-                index++;
-              }, index * 100);
-            });
-          });
         }
       },
-      { threshold: 0.2 }
+      { threshold: 0.3 }
     );
 
-    const element = document.getElementById('skills');
-    if (element) {
-      observer.observe(element);
+    if (containerRef.current) {
+      observer.observe(containerRef.current);
     }
 
     return () => observer.disconnect();
   }, []);
 
-  const renderSkillCategory = (category: SkillCategory, categoryIndex: number, isSecondRow: boolean = false) => {
-    const colors = colorMap[category.color];
-    const CategoryIcon = category.icon;
-    const baseCategoryIndex = isSecondRow ? 3 : 0;
+  const ProgressBar = ({ level, color, index }) => {
+    const [progress, setProgress] = useState(0);
+
+    useEffect(() => {
+      if (isVisible) {
+        const timer = setTimeout(() => {
+          setProgress(level);
+        }, index * 200);
+        return () => clearTimeout(timer);
+      }
+    }, [isVisible, level, index]);
 
     return (
-      <div 
-        key={categoryIndex}
-        className={`relative p-6 rounded-2xl border backdrop-blur-sm transition-all duration-300 hover:scale-105 hover:shadow-2xl group ${colors.border} ${colors.bg}`}
-        style={{'--glow-color': colors.glow} as React.CSSProperties}
-      >
-        {/* Glow Effect */}
-        <div className="absolute -inset-px rounded-2xl bg-gradient-to-r from-cyan-500 via-purple-500 to-pink-500 opacity-0 group-hover:opacity-70 transition-opacity duration-300 blur-lg"></div>
-        <div className="relative">
-        {/* Category Header */}
-        <div className="flex items-center justify-between mb-6">
-          <div className="flex items-center gap-3">
-            <div className={`p-2 rounded-lg ${colors.bg} border ${colors.border}`}>
-              <CategoryIcon className={`w-6 h-6 ${colors.text}`} />
-            </div>
-            <h2 className={`text-xl font-bold ${colors.text}`}>
-              {category.title}
-            </h2>
+      <div className="mb-6">
+        <div className="flex justify-between items-center mb-2">
+          <span className="text-gray-200 font-medium text-sm">{level}%</span>
+          <div className="flex items-center">
+            <span className="text-yellow-400 mr-2 text-lg">⭐</span>
+            <span className="text-white font-bold text-sm">{level}%</span>
           </div>
         </div>
-
-        {/* Skills List */}
-        <div className="space-y-5">
-          {category.skills.map((skill: Skill, skillIndex: number) => {
-            const globalIndex = (baseCategoryIndex + categoryIndex) * 4 + skillIndex;
-            const SkillIcon = skill.icon;
-            
-            return (
-              <div key={skillIndex} className="group/skill">
-                {/* Skill Name and Percentage */}
-                <div className="flex items-center justify-between mb-3">
-                  <div className="flex items-center gap-2">
-                    <div className={`p-1.5 rounded-lg ${colors.bg} border ${colors.border}`}>
-                      <SkillIcon className={`w-4 h-4 ${colors.text}`} />
-                    </div>
-                    <h3 className={`text-base font-medium ${colors.text}`}>
-                      {skill.name}
-                    </h3>
-                  </div>
-                  <div className={`px-3 py-1 rounded-full ${colors.bg} border ${colors.border}`}>
-                    <span className={`text-sm font-bold ${colors.text}`}>
-                      {skill.level}%
-                    </span>
-                  </div>
-                </div>
-
-                {/* Progress Bar Container */}
-                <div className="relative h-3">
-                  {/* Background Bar */}
-                  <div className={`absolute h-full w-full rounded-full bg-gradient-to-r ${colors.progressBg} border ${colors.border}`}></div>
-                  
-                  {/* Progress Fill */}
-                  <div 
-                    className={`h-full rounded-full bg-gradient-to-r ${colors.gradient} transition-all duration-1000 ease-out relative`}
-                    style={{
-                      width: animatedSkills.includes(globalIndex) ? `${skill.level}%` : '0%',
-                      boxShadow: animatedSkills.includes(globalIndex) 
-                        ? `0 0 10px ${colors.glow}60` 
-                        : 'none'
-                    }}
-                  >
-                    {/* Shimmer Effect */}
-                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent animate-shimmer"></div>
-                  </div>
-                  
-                  {/* Emoji Badge - Positioned at the end of the progress */}
-                  <div 
-                    className={`absolute top-1/2 w-6 h-6 rounded-full ${colors.bg} border ${colors.border} flex items-center justify-center z-20 transform -translate-y-1/2 transition-all duration-1000 ease-out`}
-                    style={{ 
-                      left: animatedSkills.includes(globalIndex) ? `${skill.level}%` : '0%',
-                      transform: animatedSkills.includes(globalIndex) 
-                        ? 'translate(-50%, -50%)' 
-                        : 'translate(-100%, -50%)'
-                    }}
-                  >
-                    <span className="text-xs">
-                      ⚡
-                    </span>
-                  </div>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-
-        {/* Enhanced Category Stats */}
-        <div className={`mt-6 pt-4 border-t ${colors.border} flex justify-center relative`}>
-          <div className="text-center group/stats">
-            {/* Animated Background Circle */}
-            <div className={`absolute inset-0 w-16 h-16 rounded-full ${colors.bg} opacity-20 group-hover/stats:opacity-40 transition-opacity duration-300 -z-10`}></div>
-            
-            <div className={`text-2xl font-bold ${colors.text} group-hover/stats:scale-110 transition-transform duration-300`}>
-              {Math.round(category.skills.reduce((sum: number, skill: Skill) => sum + skill.level, 0) / category.skills.length)}%
-            </div>
-            <div className="text-xs text-gray-400 uppercase tracking-wide group-hover/stats:text-gray-300 transition-colors duration-300">
-              Average
-            </div>
-            
-            {/* Floating Achievement Icons */}
-            <div className="absolute -top-2 -right-2 opacity-0 group-hover/stats:opacity-100 transition-opacity duration-500">
-              <div className="w-4 h-4 bg-yellow-400 rounded-full animate-bounce"></div>
-            </div>
-            <div className="absolute -bottom-2 -left-2 opacity-0 group-hover/stats:opacity-100 transition-opacity duration-500" style={{ animationDelay: '0.2s' }}>
-              <div className="w-3 h-3 bg-blue-400 rounded-full animate-bounce"></div>
-            </div>
+        <div className="h-3 bg-gray-700 rounded-full overflow-hidden relative">
+          <motion.div
+            className={`h-full rounded-full bg-gradient-to-r ${color} relative`}
+            initial={{ width: 0 }}
+            animate={{ width: `${progress}%` }}
+            transition={{ duration: 1.5, delay: index * 0.1, ease: "easeOut" }}
+          >
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-shimmer"></div>
+          </motion.div>
+          <div 
+            className="absolute top-0 h-full w-0.5 bg-white/80"
+            style={{ left: `${level}%` }}
+          ></div>
+          <div 
+            className="absolute top-1/2 w-5 h-5 rounded-full bg-white border-2 border-gray-800 transform -translate-y-1/2 flex items-center justify-center shadow-lg"
+            style={{ left: `${level}%`, marginLeft: '-0.625rem' }}
+          >
+            <div className="w-1 h-1 bg-gray-800 rounded-full"></div>
           </div>
         </div>
-      </div>
       </div>
     );
   };
 
+  const RadialProgress = ({ percentage, color, size = 120 }) => {
+    const radius = size / 2 - 10;
+    const circumference = 2 * Math.PI * radius;
+    const strokeDashoffset = circumference - (percentage / 100) * circumference;
+
+    return (
+      <div className="relative" style={{ width: size, height: size }}>
+        <svg className="w-full h-full transform -rotate-90">
+          <circle
+            cx={size / 2}
+            cy={size / 2}
+            r={radius}
+            stroke="currentColor"
+            strokeWidth="10"
+            fill="transparent"
+            className="text-gray-700"
+          />
+          <circle
+            cx={size / 2}
+            cy={size / 2}
+            r={radius}
+            stroke="currentColor"
+            strokeWidth="10"
+            fill="transparent"
+            strokeDasharray={circumference}
+            strokeDashoffset={strokeDashoffset}
+            className={`transition-all duration-1500 ease-out ${color.replace('from-', 'text-').replace(' to-', '-')}`}
+            strokeLinecap="round"
+          />
+        </svg>
+        <div className="absolute inset-0 flex items-center justify-center">
+          <span className="text-2xl font-bold text-white">{percentage}%</span>
+        </div>
+      </div>
+    );
+  };
+
+  const SkillCategoryCard = ({ category, index, isActive }) => {
+    return (
+      <motion.div
+        initial={{ opacity: 0, y: 50 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: index * 0.1 }}
+        className={`bg-gray-800/50 backdrop-blur-md rounded-2xl border-2 p-6 transition-all duration-500 ${
+          isActive ? 'border-cyan-400/50 scale-105 shadow-2xl' : 'border-gray-700/30 hover:border-cyan-400/30'
+        }`}
+        onClick={() => setActiveCategory(index)}
+      >
+        <div className="flex items-center justify-between mb-6">
+          <h3 className={`text-xl font-bold ${isActive ? 'text-cyan-300' : 'text-gray-300'}`}>
+            {category.icon} {category.title}
+          </h3>
+          <div className="text-sm px-3 py-1 rounded-full bg-gray-700/50 text-cyan-300 font-semibold">
+            {category.average}% avg
+          </div>
+        </div>
+        
+        <div className="space-y-2">
+          {category.skills.map((skill, skillIndex) => (
+            <div key={skillIndex} className="flex items-center justify-between py-2 border-b border-gray-700/30 last:border-b-0">
+              <span className="text-gray-300 text-sm">{skill.name}</span>
+              <div className="flex items-center">
+                <div className="w-16 h-2 bg-gray-700 rounded-full overflow-hidden mr-2">
+                  <div 
+                    className={`h-full rounded-full bg-gradient-to-r ${category.color}`}
+                    style={{ width: `${skill.level}%` }}
+                  ></div>
+                </div>
+                <span className="text-cyan-300 font-bold text-xs">{skill.level}%</span>
+              </div>
+            </div>
+          ))}
+        </div>
+      </motion.div>
+    );
+  };
+
   return (
-    <section id="skills" className="py-20 relative">
-      <div className="container mx-auto px-4">
-        <div className={`transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold mb-4">
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-400">
-                Skills & Expertise
-              </span>
-            </h2>
-            <div className="w-24 h-1 bg-gradient-to-r from-cyan-400 to-purple-400 mx-auto rounded-full"></div>
-            <p className="text-gray-400 text-lg mt-6 max-w-2xl mx-auto">
-              A comprehensive skill set built through hands-on experience and continuous learning
-            </p>
+    <section id="skills" className="py-20 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 relative overflow-hidden" ref={containerRef}>
+      {/* Animated background elements */}
+      <div className="absolute top-0 left-0 w-full h-full opacity-10">
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-cyan-500 rounded-full filter blur-3xl animate-pulse"></div>
+        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-purple-500 rounded-full filter blur-3xl animate-pulse" style={{animationDelay: '1s'}}></div>
+      </div>
+      
+      {/* Floating particles */}
+      <div className="absolute inset-0 overflow-hidden">
+        {[...Array(15)].map((_, i) => (
+          <motion.div
+            key={i}
+            className="absolute w-2 h-2 bg-cyan-400/30 rounded-full"
+            initial={{
+              x: Math.random() * 100 + 'vw',
+              y: Math.random() * 100 + 'vh',
+            }}
+            animate={{
+              x: [null, Math.random() * 100 + 'vw'],
+              y: [null, Math.random() * 100 + 'vh'],
+            }}
+            transition={{
+              duration: Math.random() * 10 + 10,
+              repeat: Infinity,
+              repeatType: "reverse",
+            }}
+          />
+        ))}
+      </div>
+
+      <div className="container mx-auto px-4 relative z-10">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={isVisible ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.8 }}
+          className="text-center mb-16"
+        >
+          <h2 className="text-4xl md:text-5xl font-bold mb-4">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-purple-400 to-cyan-400">
+              Skills & Expertise
+            </span>
+          </h2>
+          <div className="w-24 h-1 bg-gradient-to-r from-cyan-400 to-purple-400 mx-auto rounded-full mb-4"></div>
+          <p className="text-gray-300 text-lg mt-6 max-w-2xl mx-auto">
+            A comprehensive skill set built through hands-on experience and continuous learning
+          </p>
+        </motion.div>
+
+        <div className="flex flex-col lg:flex-row gap-8 mb-16">
+          <div className="lg:w-1/2">
+            <div className="sticky top-24">
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={activeCategory}
+                  initial={{ opacity: 0, x: -50 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: 50 }}
+                  transition={{ duration: 0.5 }}
+                  className="bg-gray-800/50 backdrop-blur-md rounded-2xl border border-gray-700/30 p-8"
+                >
+                  <div className="flex items-center justify-between mb-8">
+                    <h3 className="text-2xl font-bold text-cyan-300">
+                      {skillCategories[activeCategory].title}
+                    </h3>
+                    <div className="text-3xl">
+                      {skillCategories[activeCategory].icon}
+                    </div>
+                  </div>
+
+                  <div className="mb-8 flex justify-center">
+                    <RadialProgress 
+                      percentage={skillCategories[activeCategory].average} 
+                      color={skillCategories[activeCategory].color}
+                    />
+                  </div>
+
+                  <div>
+                    {skillCategories[activeCategory].skills.map((skill, index) => (
+                      <ProgressBar 
+                        key={index}
+                        level={skill.level} 
+                        color={skillCategories[activeCategory].color}
+                        index={index}
+                      />
+                    ))}
+                  </div>
+                </motion.div>
+              </AnimatePresence>
+            </div>
           </div>
 
-          <div className="flex flex-col items-center gap-8">
-            <div className="grid md:grid-cols-3 gap-8">
-              {firstRowSkills.map((category, index) => renderSkillCategory(category, index))}
-            </div>
-            <div className="grid md:grid-cols-2 gap-8 justify-center">
-              {secondRowSkills.map((category, index) => renderSkillCategory(category, index, true))}
-            </div>
-          </div>
-
-          {/* Overall Summary */}
-          <div className="mt-16 text-center">
-            <div className="bg-gray-900/50 backdrop-blur-sm rounded-2xl border border-gray-700/50 p-8 max-w-4xl mx-auto">
-              <h3 className="text-2xl font-bold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-400">
-                Continuous Growth Mindset
-              </h3>
-              <p className="text-gray-300 leading-relaxed text-lg">
-                My diverse skill set reflects a journey of continuous learning and adaptation. 
-                From technical expertise in cybersecurity and web development to creative problem-solving 
-                in UI/UX design, I bring a holistic approach to every challenge. My experience in operations 
-                and data analysis complements my technical skills, enabling me to build solutions that are 
-                both innovative and practical.
-              </p>
+          <div className="lg:w-1/2">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {skillCategories.map((category, index) => (
+                <SkillCategoryCard 
+                  key={index}
+                  category={category}
+                  index={index}
+                  isActive={activeCategory === index}
+                />
+              ))}
             </div>
           </div>
         </div>
+
+        {/* Overall Summary */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={isVisible ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.8, delay: 0.2 }}
+          className="bg-gradient-to-r from-cyan-900/30 via-purple-900/30 to-cyan-900/30 backdrop-blur-md rounded-2xl border border-cyan-500/20 p-8 max-w-4xl mx-auto"
+        >
+          <h3 className="text-2xl font-bold mb-6 text-center text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-400">
+            Continuous Growth Mindset
+          </h3>
+          <p className="text-gray-300 leading-relaxed text-lg text-center">
+            My diverse skill set reflects a journey of continuous learning and adaptation. 
+            From technical expertise in cybersecurity and web development to creative problem-solving 
+            in UI/UX design, I bring a holistic approach to every challenge. My experience in operations 
+            and data analysis complements my technical skills, enabling me to build solutions that are 
+            both innovative and practical.
+          </p>
+          
+          <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mt-8">
+            {skillCategories.map((category, index) => (
+              <div key={index} className="text-center p-4 bg-gray-800/50 rounded-xl">
+                <div className="text-2xl mb-2">{category.icon}</div>
+                <div className="text-cyan-300 font-bold text-xl">{category.average}%</div>
+                <div className="text-gray-400 text-xs uppercase tracking-wide mt-1">Average</div>
+              </div>
+            ))}
+          </div>
+        </motion.div>
       </div>
     </section>
   );
