@@ -226,12 +226,6 @@ const Skills: React.FC = () => {
                   >
                     {/* Shimmer Effect */}
                     <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent animate-shimmer"></div>
-                    
-                    {/* Percentage Indicator Line */}
-                    <div 
-                      className="absolute top-0 bottom-0 w-px bg-white/80"
-                      style={{ left: `${skill.level}%` }}
-                    ></div>
                   </div>
                 </div>
               </div>
