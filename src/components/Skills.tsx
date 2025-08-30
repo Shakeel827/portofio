@@ -210,10 +210,14 @@ const Skills: React.FC = () => {
                   </div>
                 </div>
 
-                {/* Progress Bar */}
-                <div className={`h-3 rounded-full relative overflow-hidden bg-gradient-to-r ${colors.progressBg} border ${colors.border}`}>
+                {/* Progress Bar Container */}
+                <div className="relative h-3">
+                  {/* Background Bar */}
+                  <div className={`absolute h-full w-full rounded-full bg-gradient-to-r ${colors.progressBg} border ${colors.border}`}></div>
+                  
+                  {/* Progress Fill */}
                   <div 
-                    className={`h-full rounded-full bg-gradient-to-r ${colors.gradient} transition-all duration-1000 ease-out`}
+                    className={`h-full rounded-full bg-gradient-to-r ${colors.gradient} transition-all duration-1000 ease-out relative`}
                     style={{
                       width: animatedSkills.includes(globalIndex) ? `${skill.level}%` : '0%',
                       boxShadow: animatedSkills.includes(globalIndex) 
@@ -225,8 +229,14 @@ const Skills: React.FC = () => {
                     <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent animate-shimmer"></div>
                   </div>
                   
-                  {/* Emoji Badge - NOT CROSSING */}
-                  <div className={`absolute -right-2 top-1/2 transform -translate-y-1/2 w-6 h-6 rounded-full ${colors.bg} border ${colors.border} flex items-center justify-center z-20`}>
+                  {/* Emoji Badge - Positioned based on percentage */}
+                  <div 
+                    className={`absolute top-1/2 w-6 h-6 rounded-full ${colors.bg} border ${colors.border} flex items-center justify-center z-20 transform -translate-y-1/2`}
+                    style={{ 
+                      left: animatedSkills.includes(globalIndex) ? `calc(${skill.level}% - 0.75rem)` : '-0.75rem',
+                      transition: 'left 1s ease-out'
+                    }}
+                  >
                     <span className="text-xs">
                       ⚡
                     </span>
