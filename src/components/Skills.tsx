@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { BarChart3, Palette, Code, Shield, MessageSquare, Lightbulb, Users, Database, Globe, Figma, DivideIcon as LucideIcon } from 'lucide-react';
+import { BarChart3, Palette, Code, Shield, MessageSquare, Lightbulb, Users, Database, Globe, Figma } from 'lucide-react';
 
 interface Skill {
   name: string;
   level: number;
-  icon: LucideIcon;
+  icon: React.ComponentType<any>;
 }
 
 interface SkillCategory {
   title: string;
-  icon: LucideIcon;
+  icon: React.ComponentType<any>;
   color: keyof typeof colorMap;
   skills: Skill[];
 }
@@ -203,18 +203,19 @@ const Skills: React.FC = () => {
                       {skill.name}
                     </h3>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <span className="text-yellow-400">⚡</span>
-                    <div className={`px-3 py-1 rounded-full ${colors.bg} border ${colors.border}`}>
-                      <span className={`text-sm font-bold ${colors.text}`}>
-                        {skill.level}%
-                      </span>
-                    </div>
+                  <div className={`px-3 py-1 rounded-full ${colors.bg} border ${colors.border}`}>
+                    <span className={`text-sm font-bold ${colors.text}`}>
+                      {skill.level}%
+                    </span>
                   </div>
                 </div>
 
-                {/* Progress Bar */}
-                <div className={`h-3 rounded-full relative overflow-hidden bg-gradient-to-r ${colors.progressBg} border ${colors.border}`}>
+                {/* Progress Bar Container */}
+                <div className="relative h-3">
+                  {/* Background Bar */}
+                  <div className={`absolute h-full w-full rounded-full bg-gradient-to-r ${colors.progressBg} border ${colors.border}`}></div>
+                  
+                  {/* Progress Fill */}
                   <div 
                     className={`h-full rounded-full bg-gradient-to-r ${colors.gradient} transition-all duration-1000 ease-out relative`}
                     style={{
@@ -226,6 +227,21 @@ const Skills: React.FC = () => {
                   >
                     {/* Shimmer Effect */}
                     <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent animate-shimmer"></div>
+                  </div>
+                  
+                  {/* Emoji Badge - Positioned based on percentage */}
+                  <div 
+                    className={`absolute top-1/2 w-6 h-6 rounded-full ${colors.bg} border ${colors.border} flex items-center justify-center z-20 transform -translate-y-1/2 transition-all duration-1000 ease-out`}
+                    style={{ 
+                      left: animatedSkills.includes(globalIndex) ? `${skill.level}%` : '0%',
+                      transform: animatedSkills.includes(globalIndex) 
+                        ? 'translate(-50%, -50%)' 
+                        : 'translate(-100%, -50%)'
+                    }}
+                  >
+                    <span className="text-xs">
+                      ⚡
+                    </span>
                   </div>
                 </div>
               </div>
