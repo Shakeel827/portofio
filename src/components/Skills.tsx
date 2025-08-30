@@ -231,10 +231,9 @@ const Skills: React.FC = () => {
                   
                   {/* Emoji Badge - Positioned based on percentage */}
                   <div 
-                    className={`absolute top-1/2 w-6 h-6 rounded-full ${colors.bg} border ${colors.border} flex items-center justify-center z-20 transform -translate-y-1/2`}
+                    className={`absolute top-1/2 w-6 h-6 rounded-full ${colors.bg} border ${colors.border} flex items-center justify-center z-20 transform -translate-y-1/2 transition-all duration-1000 ease-out`}
                     style={{ 
-                      left: animatedSkills.includes(globalIndex) ? `calc(${skill.level}% - 0.75rem)` : '-0.75rem',
-                      transition: 'left 1s ease-out'
+                      left: animatedSkills.includes(globalIndex) ? `calc(${skill.level}% - 0.75rem)` : '-0.75rem'
                     }}
                   >
                     <span className="text-xs">
