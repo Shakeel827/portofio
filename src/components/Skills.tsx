@@ -203,10 +203,13 @@ const Skills: React.FC = () => {
                       {skill.name}
                     </h3>
                   </div>
-                  <div className={`px-3 py-1 rounded-full ${colors.bg} border ${colors.border}`}>
-                    <span className={`text-sm font-bold ${colors.text}`}>
-                      {skill.level}%
-                    </span>
+                  <div className="flex items-center gap-2">
+                    <span className="text-yellow-400">⚡</span>
+                    <div className={`px-3 py-1 rounded-full ${colors.bg} border ${colors.border}`}>
+                      <span className={`text-sm font-bold ${colors.text}`}>
+                        {skill.level}%
+                      </span>
+                    </div>
                   </div>
                 </div>
 
@@ -233,10 +236,7 @@ const Skills: React.FC = () => {
                   <div 
                     className={`absolute top-1/2 w-6 h-6 rounded-full ${colors.bg} border ${colors.border} flex items-center justify-center z-20 transform -translate-y-1/2 transition-all duration-1000 ease-out`}
                     style={{ 
-                      left: animatedSkills.includes(globalIndex) ? `${skill.level}%` : '0%',
-                      transform: animatedSkills.includes(globalIndex) 
-                        ? 'translate(-50%, -50%)' 
-                        : 'translate(-100%, -50%)'
+                      left: animatedSkills.includes(globalIndex) ? `calc(${skill.level}% - 0.75rem)` : '-0.75rem'
                     }}
                   >
                     <span className="text-xs">
