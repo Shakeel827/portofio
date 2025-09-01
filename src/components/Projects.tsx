@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { ExternalLink, Github, Shield, FileText, Zap } from 'lucide-react';
+import { ExternalLink, Github, Shield, FileText, Zap, Brain } from 'lucide-react';
 
 const Projects: React.FC = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -37,6 +37,22 @@ const Projects: React.FC = () => {
         'Real-time preview & editing',
         'PDF export functionality'
       ]
+    },
+    {
+      title: 'PandaNexus',
+      subtitle: 'AI-Powered Knowledge Assistant',
+      description: 'Intelligent AI assistant that solves doubts and provides insightful answers. Built with advanced natural language processing capabilities for accurate and contextual responses to user queries.',
+      tech: ['React', 'Node.js', 'OpenAI API', 'WebSockets'],
+      liveUrl: 'https://pandanexus.pandascanpros.in',
+      githubUrl: 'https://github.com/Shakeel827/shakeelgpt',
+      icon: Brain,
+      color: 'green',
+      features: [
+        'Natural language understanding',
+        'Contextual conversation memory',
+        'Real-time response generation',
+        'User-friendly chat interface'
+      ]
     }
   ];
 
@@ -54,6 +70,13 @@ const Projects: React.FC = () => {
       shadow: 'shadow-purple-500/25',
       text: 'text-purple-400',
       bg: 'bg-purple-500/10'
+    },
+    green: {
+      gradient: 'from-emerald-500 to-teal-500',
+      border: 'border-emerald-500/30',
+      shadow: 'shadow-emerald-500/25',
+      text: 'text-emerald-400',
+      bg: 'bg-emerald-500/10'
     }
   };
 
@@ -76,7 +99,7 @@ const Projects: React.FC = () => {
   }, []);
 
   return (
-    <section className="py-20 relative">
+    <section id="projects" className="py-20 relative">
       <div className="container mx-auto px-4">
         <div className={`transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
           <div className="text-center mb-16">
@@ -91,7 +114,7 @@ const Projects: React.FC = () => {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-8 max-w-6xl mx-auto">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
             {projects.map((project, index) => {
               const colors = colorMap[project.color as keyof typeof colorMap];
               const IconComponent = project.icon;
