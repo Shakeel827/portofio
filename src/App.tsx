@@ -21,7 +21,7 @@ function App() {
     // Simulate loading time
     const timer = setTimeout(() => {
       setIsLoading(false);
-    }, 3000); // Adjust time as needed
+    }, 7000); // Extended for world-class animation sequence
 
     return () => clearTimeout(timer);
   }, []);
