@@ -18,10 +18,10 @@ function App() {
   const [activeSection, setActiveSection] = useState('home');
 
   useEffect(() => {
-    // Simulate loading time
+    // Reduced loading time for better UX
     const timer = setTimeout(() => {
       setIsLoading(false);
-    }, 7000); // Extended for world-class animation sequence
+    }, 3000);
 
     return () => clearTimeout(timer);
   }, []);
@@ -43,8 +43,20 @@ function App() {
       }
     };
 
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    // Throttle scroll events for better performance
+    let ticking = false;
+    const throttledScroll = () => {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          handleScroll();
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+
+    window.addEventListener('scroll', throttledScroll, { passive: true });
+    return () => window.removeEventListener('scroll', throttledScroll);
   }, []);
 
   return (
